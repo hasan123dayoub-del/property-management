@@ -107,12 +107,18 @@ html, body {
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Welcome back</h3>
         <p class="text-xs text-gray-500 mb-6">Sign in to continue to your dashboard</p>
 
+        @if ($errors->any())
+          <div class="mb-4 rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700" role="alert">
+            {{ $errors->first() }}
+          </div>
+        @endif
+
         <form id="loginForm" method="POST" action="{{ route('login') }}">
           @csrf
 
           <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input name="email" required
+            <input id="emailInput" name="email" value="{{ old('email') }}" required
               class="mt-1 w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-300 shadow-sm"
               placeholder="you@example.com" autocomplete="username">
           </div>
@@ -158,6 +164,20 @@ html, body {
             Login
           </button>
         </form>
+
+        @if (config('app.demo_mode'))
+          {{-- Public demo: one click fills the form with a demo account. --}}
+          <div class="mt-6 rounded-xl border border-dashed border-indigo-200 bg-indigo-50/60 p-4">
+            <p class="text-sm font-semibold text-gray-700">Demo accounts <span class="font-normal text-gray-500">(password: password)</span></p>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <button type="button" data-demo-email="admin@demo.com"
+                class="demo-account rounded-lg border border-indigo-200 bg-white px-3 py-1.5 text-sm font-medium text-indigo-700 hover:bg-indigo-100">Admin</button>
+              <button type="button" data-demo-email="employee@demo.com"
+                class="demo-account rounded-lg border border-indigo-200 bg-white px-3 py-1.5 text-sm font-medium text-indigo-700 hover:bg-indigo-100">Employee</button>
+            </div>
+            <p class="mt-3 text-xs text-gray-500">Customers use the REST API (<code>POST /api/login</code> with customer@demo.com). Free hosting: the first load can take up to a minute while the server wakes up.</p>
+          </div>
+        @endif
       </div>
 
       <p class="text-center text-xs text-gray-400 mt-4">© {{ date('Y') }} RealEstateSys</p>
@@ -269,6 +289,14 @@ html, body {
       clone.style.opacity = '0';
       setTimeout(() => form.submit(), 120);
     }, { once: true });
+  });
+
+  // demo accounts: fill the form with one click
+  document.querySelectorAll('.demo-account').forEach(function (button) {
+    button.addEventListener('click', function () {
+      document.getElementById('emailInput').value = button.dataset.demoEmail;
+      pwdInput.value = 'password';
+    });
   });
 
   // accessibility: toggle via Enter when focused

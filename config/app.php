@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    // Public demo: shows the demo accounts on the login page (set DEMO_MODE=true on the demo server only).
+    'demo_mode' => (bool) env('DEMO_MODE', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

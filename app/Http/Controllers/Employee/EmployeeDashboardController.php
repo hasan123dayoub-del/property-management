@@ -52,8 +52,9 @@ class EmployeeDashboardController extends Controller
     private function getWeeklyChartData($employeeId)
     {
 
-        $startDate = Carbon::now()->startOfWeek();
-        $endDate = Carbon::now()->endOfWeek();
+        // The chart shows the last 7 days (today included), so query exactly that range.
+        $startDate = Carbon::today()->subDays(6);
+        $endDate = Carbon::now()->endOfDay();
 
         $weeklyBookings = Booking::where('employee_id', $employeeId)
             ->whereBetween('created_at', [$startDate, $endDate])
@@ -88,7 +89,10 @@ class EmployeeDashboardController extends Controller
         $monthlyBookings = Booking::where('employee_id', $employeeId)
             ->whereBetween('created_at', [$startDate, $endDate])
             ->select(
-                DB::raw('DAY(created_at) as day_number'),
+                // Day of the month, on MySQL and on SQLite (used by the demo deployment).
+                DB::raw((DB::connection()->getDriverName() === 'sqlite'
+                    ? "CAST(strftime('%d', created_at) AS INTEGER)"
+                    : 'DAY(created_at)').' as day_number'),
                 DB::raw('COUNT(*) as total')
             )
             ->groupBy('day_number')

@@ -1,0 +1,11 @@
+# Render Blueprint: free Docker web service for the Property Management System demo.
+services:
+  - type: web
+    name: property-management
+    runtime: docker
+    plan: free
+    healthCheckPath: /up
+    autoDeploy: true
+    envVars:
+      - key: DEMO_MODE
+        value: "true"

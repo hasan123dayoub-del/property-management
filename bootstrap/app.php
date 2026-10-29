@@ -21,12 +21,14 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => RoleOrPermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'check.active' => CheckActive::class,
-            $middleware->web(append: [
-                \App\Http\Middleware\SetLocale::class,
-            ]),
-
         ]);
 
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class,
+        ]);
+
+        // Behind Render's proxy, so generated URLs (assets, forms) use https.
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

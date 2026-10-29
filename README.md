@@ -1,6 +1,20 @@
 # 🏠 Property Management System
 A comprehensive and integrated platform for browsing, booking, and managing properties, with robust features for both tenants and property administrators.
 
+## 🌐 Live demo
+
+**Live demo:** (added after the first Render deploy)
+
+The demo is seeded with 13 properties, 46 visit bookings in every status, reviews and chat messages, so the dashboards and reports show real numbers. The login page has one-click buttons for the demo accounts (password `password` for all):
+
+| Role | Email | Where |
+|---|---|---|
+| Admin | `admin@demo.com` | Web dashboard: properties, amenities, bookings, reports, users |
+| Employee | `employee@demo.com` | Web dashboard: assigned and pending bookings |
+| Customer | `customer@demo.com` | REST API: `POST /api/login`, then `/api/bookings`, `/api/reviews` |
+
+Public API endpoints: `GET /api/properties` and `GET /api/properties/{id}`. Hosted on Render's free tier with SQLite: the first load can take about a minute, and the demo data resets on every restart.
+
 
 
 ## 📸 Screenshots
@@ -202,13 +216,16 @@ npm run dev           # Compile frontend assets with Vite
 ```
 
 ## 🔑 Sample Credentials
+Created by `php artisan db:seed` (password `password` for all):
+
 ### 👨‍💼 Admin
-**Email:** admin@example.com  
-**Password:** password123
+**Email:** admin@demo.com
 
 ### 👨‍💻 Employee
-**Email:** employee@property.com  
-**Password:** 12345678
+**Email:** employee@demo.com
+
+### 🙋 Customer (API)
+**Email:** customer@demo.com
 
 
 ## 📞 Support & Contributions

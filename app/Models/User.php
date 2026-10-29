@@ -24,6 +24,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    // Matches the column default, so a new account is active before it is reloaded
+    // (CheckActive reads is_active from this instance).
+    protected $attributes = [
+        'is_active' => true,
+    ];
+
     public function bookings()
     {
         return $this->hasMany(Booking::class, 'user_id');

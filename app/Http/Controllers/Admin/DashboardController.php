@@ -16,7 +16,7 @@ class DashboardController extends Controller
             ->map(fn ($i) => Carbon::now()->subMonths($i)->format('Y-m'))
             ->values();
         $rawBooking = Booking::select(
-            DB::raw("DATE_FORMAT(scheduled_at, '%Y-%m') as month"),
+            DB::raw($this->yearMonth('scheduled_at').' as month'),
             DB::raw("SUM(status = 'pending') as pending"),
             DB::raw("SUM(status = 'approved') as approved"),
             DB::raw("SUM(status = 'rejected') as rejected")
@@ -39,7 +39,7 @@ class DashboardController extends Controller
         })->values();
 
         $rawProps = Property::select(
-            DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month"),
+            DB::raw($this->yearMonth('created_at').' as month'),
             DB::raw('COUNT(*) as total')
         )
             ->where('created_at', '>=', now()->subMonths(6))
@@ -66,5 +66,13 @@ class DashboardController extends Controller
             'totalProperties',
             'totalBookings'
         ));
+    }
+
+    // "YYYY-MM" of a date column, on MySQL and on SQLite (used by the demo deployment).
+    private function yearMonth(string $column): string
+    {
+        return DB::connection()->getDriverName() === 'sqlite'
+            ? "strftime('%Y-%m', {$column})"
+            : "DATE_FORMAT({$column}, '%Y-%m')";
     }
 }
