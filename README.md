@@ -1,4 +1,6 @@
 # 🏠 Property Management System
+
+[![tests](https://github.com/hasan123dayoub-del/property-management/actions/workflows/tests.yml/badge.svg)](https://github.com/hasan123dayoub-del/property-management/actions/workflows/tests.yml)
 A comprehensive and integrated platform for browsing, booking, and managing properties, with robust features for both tenants and property administrators.
 
 ## 🌐 Live demo
