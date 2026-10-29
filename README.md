@@ -3,7 +3,7 @@ A comprehensive and integrated platform for browsing, booking, and managing prop
 
 ## 🌐 Live demo
 
-**Live demo:** (added after the first Render deploy)
+**Live demo:** https://property-management-xs68.onrender.com
 
 The demo is seeded with 13 properties, 46 visit bookings in every status, reviews and chat messages, so the dashboards and reports show real numbers. The login page has one-click buttons for the demo accounts (password `password` for all):
 
