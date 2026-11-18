@@ -17,9 +17,10 @@ class DashboardController extends Controller
             ->values();
         $rawBooking = Booking::select(
             DB::raw($this->yearMonth('scheduled_at').' as month'),
-            DB::raw("SUM(status = 'pending') as pending"),
-            DB::raw("SUM(status = 'approved') as approved"),
-            DB::raw("SUM(status = 'rejected') as rejected")
+            // CASE instead of SUM(status = ...): PostgreSQL cannot add up booleans
+            DB::raw("SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending"),
+            DB::raw("SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) as approved"),
+            DB::raw("SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as rejected")
         )
             ->whereNotNull('scheduled_at')
             ->where('scheduled_at', '>=', now()->subMonths(6))
@@ -68,11 +69,13 @@ class DashboardController extends Controller
         ));
     }
 
-    // "YYYY-MM" of a date column, on MySQL and on SQLite (used by the demo deployment).
+    // "YYYY-MM" of a date column, on MySQL, SQLite and PostgreSQL (used by the demo deployment).
     private function yearMonth(string $column): string
     {
-        return DB::connection()->getDriverName() === 'sqlite'
-            ? "strftime('%Y-%m', {$column})"
-            : "DATE_FORMAT({$column}, '%Y-%m')";
+        return match (DB::connection()->getDriverName()) {
+            'sqlite' => "strftime('%Y-%m', {$column})",
+            'pgsql' => "to_char({$column}, 'YYYY-MM')",
+            default => "DATE_FORMAT({$column}, '%Y-%m')",
+        };
     }
 }

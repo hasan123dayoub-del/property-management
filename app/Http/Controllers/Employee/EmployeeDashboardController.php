@@ -89,10 +89,12 @@ class EmployeeDashboardController extends Controller
         $monthlyBookings = Booking::where('employee_id', $employeeId)
             ->whereBetween('created_at', [$startDate, $endDate])
             ->select(
-                // Day of the month, on MySQL and on SQLite (used by the demo deployment).
-                DB::raw((DB::connection()->getDriverName() === 'sqlite'
-                    ? "CAST(strftime('%d', created_at) AS INTEGER)"
-                    : 'DAY(created_at)').' as day_number'),
+                // Day of the month, on MySQL, SQLite and PostgreSQL (used by the demo deployment).
+                DB::raw(match (DB::connection()->getDriverName()) {
+                    'sqlite' => "CAST(strftime('%d', created_at) AS INTEGER)",
+                    'pgsql' => 'CAST(EXTRACT(DAY FROM created_at) AS INTEGER)',
+                    default => 'DAY(created_at)',
+                }.' as day_number'),
                 DB::raw('COUNT(*) as total')
             )
             ->groupBy('day_number')

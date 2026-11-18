@@ -6,7 +6,7 @@ A comprehensive and integrated platform for browsing, booking, and managing prop
 
 ## 🌐 Live demo
 
-**Live demo:** https://property-management-xs68.onrender.com
+**Live demo:** https://property-management-hasan.vercel.app/login
 
 The demo is seeded with 13 properties, 46 visit bookings in every status, reviews and chat messages, so the dashboards and reports show real numbers. The login page has one-click buttons for the demo accounts (password `password` for all):
 
@@ -16,7 +16,7 @@ The demo is seeded with 13 properties, 46 visit bookings in every status, review
 | Employee | `employee@demo.com` | Web dashboard: assigned and pending bookings |
 | Customer | `customer@demo.com` | REST API: `POST /api/login`, then `/api/bookings`, `/api/reviews` |
 
-Public API endpoints: `GET /api/properties` and `GET /api/properties/{id}`. Hosted on Render's free tier with SQLite: the first load can take about a minute, and the demo data resets on every restart.
+Public API endpoints: `GET /api/properties` and `GET /api/properties/{id}`. Hosted on Vercel (PHP runtime) with a Neon PostgreSQL database in Frankfurt; the demo data resets on every deploy and every night.
 
 
 

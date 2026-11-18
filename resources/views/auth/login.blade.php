@@ -175,7 +175,7 @@ html, body {
               <button type="button" data-demo-email="employee@demo.com"
                 class="demo-account rounded-lg border border-indigo-200 bg-white px-3 py-1.5 text-sm font-medium text-indigo-700 hover:bg-indigo-100">Employee</button>
             </div>
-            <p class="mt-3 text-xs text-gray-500">Customers use the REST API (<code>POST /api/login</code> with customer@demo.com). Free hosting: the first load can take up to a minute while the server wakes up.</p>
+            <p class="mt-3 text-xs text-gray-500">Customers use the REST API (<code>POST /api/login</code> with customer@demo.com). The demo data resets every night.</p>
           </div>
         @endif
       </div>

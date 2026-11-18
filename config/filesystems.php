@@ -40,7 +40,8 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            // Read-only hosts (the Vercel demo) point this at /tmp, so uploads still work there.
+            'root' => env('PUBLIC_DISK_ROOT', storage_path('app/public')),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
